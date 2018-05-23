@@ -1,0 +1,16 @@
+<?php
+namespace %namespace%;
+
+%useClasses%
+
+%factoryClassComment%
+class %factoryClassName%
+{
+    /** @return %registryClassName% */
+    public function create()
+    {
+        $registry = new %registryClassName%();
+%setRegistryProperties%
+        return $registry;
+    }
+}

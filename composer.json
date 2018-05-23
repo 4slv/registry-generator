@@ -1,0 +1,22 @@
+{
+    "name": "4slv/registry-generator",
+    "description": "registry class code generator",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Dobrynin",
+            "email": "gopooop@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "4slv/helper": "v1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RegistryGenerator\\": ""
+        }
+    }
+}

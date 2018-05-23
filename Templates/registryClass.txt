@@ -1,0 +1,11 @@
+<?php
+namespace %namespace%;
+
+%useClasses%
+
+%classComment%
+class %className%
+{
+%classProperties%
+%classFunctions%
+}

@@ -1,0 +1,2 @@
+        $%propertyName%%PropertyParameterName% = %parameterValue%;
+        $%propertyName%->set%PropertyParameterName%($%propertyName%%PropertyParameterName%);

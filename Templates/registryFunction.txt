@@ -1,0 +1,14 @@
+    /** @return %propertyClass% %propertyComment% */
+    public function get%PropertyName%()
+    {
+        return $this->%propertyName%;
+    }
+
+    /** @param %propertyClass% $%propertyName% %propertyComment%
+     * @return $this */
+    public function set%PropertyName%($%propertyName%)
+    {
+        $this->%propertyName% = $%propertyName%;
+        return $this;
+    }
+

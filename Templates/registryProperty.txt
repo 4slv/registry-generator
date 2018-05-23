@@ -1,0 +1,3 @@
+    /** @var %propertyClass% %propertyComment% */
+    protected $%propertyName%;
+
