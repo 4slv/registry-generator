@@ -28,7 +28,7 @@ class RegistryFactoryGenerator
     /** @var string коментарий класса фабрики реестра */
     protected $factoryClassComment;
 
-    /** @var RegistryElement[] список элементов реестра */
+    /** @var RegistryElementClass[] список элементов реестра */
     protected $registryElementList = [];
 
     /**
@@ -152,7 +152,7 @@ class RegistryFactoryGenerator
     }
 
     /**
-     * @return RegistryElement[] список элементов реестра
+     * @return RegistryElementClass[] список элементов реестра
      */
     protected function getRegistryElementList(): array
     {
@@ -160,7 +160,7 @@ class RegistryFactoryGenerator
     }
 
     /**
-     * @param RegistryElement[] $registryElementList список элементов реестра
+     * @param RegistryElementClass[] $registryElementList список элементов реестра
      * @return $this
      */
     public function setRegistryElementList(array $registryElementList)
@@ -253,10 +253,10 @@ class RegistryFactoryGenerator
     }
 
     /**
-     * @param RegistryElement $registryElement элемент реестра
+     * @param RegistryElementClass $registryElement элемент реестра
      * @return string контент установки свойства реестра
      */
-    protected function getSetRegistryPropertyContent(RegistryElement $registryElement)
+    protected function getSetRegistryPropertyContent(RegistryElementClass $registryElement)
     {
         return StringHelper::replacePatterns(
             $this->getTemplateRegistryFactorySetProperty(),
@@ -270,10 +270,10 @@ class RegistryFactoryGenerator
     }
 
     /**
-     * @param RegistryElement $registryElement элемент реестра
+     * @param RegistryElementClass $registryElement элемент реестра
      * @return string контент установки параметров свойства реестра
      */
-    protected function getSetPropertyParametersContent(RegistryElement $registryElement)
+    protected function getSetPropertyParametersContent(RegistryElementClass $registryElement)
     {
         $propertyParametersContent = '';
         foreach ($registryElement->getParameterList() as $parameter) {
@@ -283,12 +283,12 @@ class RegistryFactoryGenerator
     }
 
     /**
-     * @param RegistryElement $registryElement элемент реестра
+     * @param RegistryElementClass $registryElement элемент реестра
      * @param RegistryElementParameter $registryElementParameter параметр элемента реестра
      * @return string контент установки параметра свойства реестра
      */
     protected function getSetPropertyParameterContent(
-        RegistryElement $registryElement, RegistryElementParameter $registryElementParameter
+        RegistryElementClass $registryElement, RegistryElementParameter $registryElementParameter
     )
     {
         return StringHelper::replacePatterns(

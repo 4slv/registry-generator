@@ -10,6 +10,9 @@ class RegistryGenerator
 {
     use TemplateContentGetter;
 
+    /** @var string пространство имён */
+    protected $extendsBy;
+
     /** @var string путь к папке проекта */
     protected $projectPath;
 
@@ -27,6 +30,26 @@ class RegistryGenerator
 
     /** @var RegistryElement[] список элементов реестра */
     protected $registryElementList = [];
+
+    /**
+     * @return string|null
+     */
+    public function getExtendsBy(): ?string
+    {
+        return $this->extendsBy;
+    }
+
+    /**
+     * @param string $extendsBy
+     * @return $this
+     */
+    public function setExtendsBy(?string $extendsBy)
+    {
+        $this->extendsBy = $extendsBy;
+        return $this;
+    }
+
+
 
     /**
      * @return string путь к папке проекта
@@ -171,9 +194,18 @@ class RegistryGenerator
                 '%classComment%' => $this->formatComment($this->getClassComment()),
                 '%className%' => $this->getClassName(),
                 '%classProperties%' => $this->getPropertiesContent(),
-                '%classFunctions%' => $this->getFunctionsListContent()
+                '%classFunctions%' => $this->getFunctionsListContent(),
+                '%classExtends%' => $this->getExtends()
             ]
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getExtends()
+    {
+        return empty($this->getExtendsBy()) ? '' : 'extends '.$this->getExtendsBy();
     }
 
     /**
@@ -183,8 +215,10 @@ class RegistryGenerator
     {
         $useClassesList = [];
         foreach ($this->getRegistryElementList() as $registryElement) {
-            $fullClassName = $registryElement->getPropertyFullClassName();
-            $useClassesList[$fullClassName] = "use $fullClassName;";
+            if($registryElement instanceof RegistryElementClass) {
+                $fullClassName = $registryElement->getPropertyFullClassName();
+                $useClassesList[$fullClassName] = "use $fullClassName;";
+            }
         }
         return implode("\n", $useClassesList);
     }
@@ -216,13 +250,22 @@ class RegistryGenerator
      */
     protected function getPropertyContent(RegistryElement $registryElement)
     {
+        $templateData = [
+            '%propertyComment%' => $registryElement->getPropertyComment(),
+            '%propertyName%' => $registryElement->getPropertyName(),
+            '%propertyType%' => '',
+            '%propertyClass%' => ''
+        ];
+        switch (true){
+            case $registryElement instanceof RegistryElementClass:
+                $templateData['%propertyClass%'] = $registryElement->getPropertyClassName();
+                break;
+            case $registryElement instanceof RegistryElementPrimitive:
+                $templateData['%propertyType%'] = $registryElement->getType();
+                break;
+        }
         return StringHelper::replacePatterns(
-            $this->getTemplateRegistryProperty(),
-            [
-                '%propertyClass%' => $registryElement->getPropertyClassName(),
-                '%propertyComment%' => $registryElement->getPropertyComment(),
-                '%propertyName%' => $registryElement->getPropertyName()
-            ]
+            $this->getTemplateRegistryProperty(),$templateData
         );
     }
 
@@ -244,15 +287,24 @@ class RegistryGenerator
      */
     protected function getFunctionsContent(RegistryElement $registryElement)
     {
+        $templateData = [
+            '%propertyComment%' => $registryElement->getPropertyComment(),
+            '%PropertyName%' => ucfirst($registryElement->getPropertyName()),
+            '%propertyName%' => $registryElement->getPropertyName(),
+            '%propertyClass%' => '',
+            '%propertyType%' => ''
+        ];
+        switch (true){
+            case $registryElement instanceof RegistryElementClass:
+                $templateData['%propertyClass%'] = $registryElement->getPropertyClassName();
+                break;
+            case $registryElement instanceof RegistryElementPrimitive:
+                $templateData['%propertyType%'] = $registryElement->getType();
+                break;
+        }
         return StringHelper::replacePatterns(
-            $this->getTemplateRegistryFunction(),
-            [
-                '%propertyClass%' => $registryElement->getPropertyClassName(),
-                '%propertyComment%' => $registryElement->getPropertyComment(),
-                '%PropertyName%' => ucfirst($registryElement->getPropertyName()),
-                '%propertyName%' => $registryElement->getPropertyName(),
+            $this->getTemplateRegistryFunction(),$templateData
 
-            ]
         );
     }
 

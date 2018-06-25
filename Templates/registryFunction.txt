@@ -1,10 +1,10 @@
-    /** @return %propertyClass% %propertyComment% */
+    /** @return %propertyClass%%propertyType% %propertyComment% */
     public function get%PropertyName%()
     {
         return $this->%propertyName%;
     }
 
-    /** @param %propertyClass% $%propertyName% %propertyComment%
+    /** @param %propertyClass%%propertyType% $%propertyName% %propertyComment%
      * @return $this */
     public function set%PropertyName%($%propertyName%)
     {
