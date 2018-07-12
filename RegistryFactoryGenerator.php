@@ -262,11 +262,34 @@ class RegistryFactoryGenerator
             $this->getTemplateRegistryFactorySetProperty(),
             [
                 '%propertyName%' => $registryElement->getPropertyName(),
-                '%propertyClass%' => $registryElement->getPropertyClassName(),
+                '%initProperty%' => $this->initProperty($registryElement),
                 '%PropertyName%' => ucfirst($registryElement->getPropertyName()),
                 '%setPropertyParameters%' => $this->getSetPropertyParametersContent($registryElement)
             ]
         );
+    }
+
+    /**
+     * @param RegistryElementClass $registryElement
+     * @return string
+     */
+    protected function initProperty(RegistryElementClass $registryElement):string
+    {
+        $param['%propertyClass%']  = $registryElement->getPropertyClassName();
+        switch (true){
+            case is_null($registryElement->getRegistryElementClassInitializationMethod()):
+            $template =  $this->getTemplateRegistryFactorySetPropertyInitializationMethodConstruct();
+                break;
+            case $registryElement->getRegistryElementClassInitializationMethod()->isStatic() === true:
+                $template =  $this->getTemplateRegistryFactorySetPropertyInitializationMethodStatic();
+                $param['%method%']  = $registryElement->getRegistryElementClassInitializationMethod()->getMethod();
+                break;
+            case $registryElement->getRegistryElementClassInitializationMethod()->isStatic() === false:
+                $template =  $this->getTemplateRegistryFactorySetPropertyInitializationMethodNotStatic();
+                $param['%method%']  = $registryElement->getRegistryElementClassInitializationMethod()->getMethod();
+                break;
+        }
+        return StringHelper::replacePatterns($template,$param);
     }
 
     /**

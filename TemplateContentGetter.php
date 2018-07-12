@@ -79,4 +79,48 @@ trait TemplateContentGetter
             $templateFileName
         );
     }
+
+    /**
+     * @return string шаблон создания класса параметра
+     */
+    protected function getTemplateRegistryFactorySetPropertyInitializationMethodConstruct()
+    {
+        return $this->getTemplateContentRegistryFactorySetProperty(
+            'initializationMethodConstruct.txt'
+        );
+    }
+
+    /**
+     * @return string шаблон создания класса параметра
+     */
+    protected function getTemplateRegistryFactorySetPropertyInitializationMethodStatic()
+    {
+        return $this->getTemplateContentRegistryFactorySetProperty(
+            'initializationMethodStatic.txt'
+        );
+    }
+
+    /**
+     * @return string шаблон создания класса параметра
+     */
+    protected function getTemplateRegistryFactorySetPropertyInitializationMethodNotStatic()
+    {
+        return $this->getTemplateContentRegistryFactorySetProperty(
+            'initializationMethodNotStatic.txt'
+        );
+    }
+
+    /**
+     * @param string $templateFileName имя файла шаблона
+     * @return string содержимое шаблона
+     */
+    protected function getTemplateContentRegistryFactorySetProperty($templateFileName)
+    {
+        return file_get_contents(implode(DIRECTORY_SEPARATOR,[
+            __DIR__,
+            'Templates',
+            'RegistryFactorySetProperty',
+            $templateFileName
+        ]));
+    }
 }

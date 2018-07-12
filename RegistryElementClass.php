@@ -8,6 +8,9 @@ class RegistryElementClass extends RegistryElement
     /** @var string полное название класса (с неймспейсом) свойства */
     protected $propertyFullClassName;
 
+    /** @var  RegistryElementClassInitializationMethod */
+    protected $registryElementClassInitializationMethod;
+
     /**
      * @return string название класса (без неймспейса) свойства
      */
@@ -34,6 +37,26 @@ class RegistryElementClass extends RegistryElement
     {
         return $this->propertyFullClassName;
     }
+
+    /**
+     * @return RegistryElementClassInitializationMethod|null
+     */
+    public function getRegistryElementClassInitializationMethod(): ?RegistryElementClassInitializationMethod
+    {
+        return $this->registryElementClassInitializationMethod;
+    }
+
+    /**
+     * @param RegistryElementClassInitializationMethod $registryElementClassInitializationMethod
+     * @return $this
+     */
+    public function setRegistryElementClassInitializationMethod(?RegistryElementClassInitializationMethod $registryElementClassInitializationMethod)
+    {
+        $this->registryElementClassInitializationMethod = $registryElementClassInitializationMethod;
+        return $this;
+    }
+
+
 
 
 }

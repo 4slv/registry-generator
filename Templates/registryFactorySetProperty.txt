@@ -1,4 +1,4 @@
 
-        $%propertyName% = new %propertyClass%();
+        $%propertyName% = %initProperty%
 %setPropertyParameters%
         $registry->set%PropertyName%($%propertyName%);
