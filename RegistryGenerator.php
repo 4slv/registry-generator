@@ -201,11 +201,29 @@ class RegistryGenerator
     }
 
     /**
-     * @return string
+     * @return string класс расширения
      */
     protected function getExtends()
     {
-        return empty($this->getExtendsBy()) ? '' : 'extends '.$this->getExtendsBy();
+        $parentClassName = $this->getParentClassName();
+        return empty($parentClassName) ? '' : 'extends '. $parentClassName;
+    }
+
+    /**
+     * @return string полное название родителького класса (с неймспейсом)
+     */
+    protected function getParentClassFullName()
+    {
+        return ltrim(trim($this->getExtendsBy()), '\\');
+    }
+
+    /**
+     * @return string название родителького класса (без неймспейса)
+     */
+    protected function getParentClassName()
+    {
+        $parentClassNameParts = explode('\\', $this->getParentClassFullName());
+        return array_pop($parentClassNameParts);
     }
 
     /**
@@ -214,6 +232,11 @@ class RegistryGenerator
     protected function getUseClassesContent()
     {
         $useClassesList = [];
+        $parentClass = $this->getParentClassFullName();
+        if(strlen($parentClass)){
+            $useClassesList[$parentClass] = "use $parentClass;";
+        }
+
         foreach ($this->getRegistryElementList() as $registryElement) {
             if($registryElement instanceof RegistryElementClass) {
                 $fullClassName = $registryElement->getPropertyFullClassName();
