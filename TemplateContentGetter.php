@@ -81,7 +81,7 @@ trait TemplateContentGetter
     }
 
     /**
-     * @return string шаблон создания класса параметра
+     * @return string шаблон создания параметра через инстанцирование класса
      */
     protected function getTemplateRegistryFactorySetPropertyInitializationMethodConstruct()
     {
@@ -91,7 +91,7 @@ trait TemplateContentGetter
     }
 
     /**
-     * @return string шаблон создания класса параметра
+     * @return string шаблон создания параметра через запуск не статического метода класса
      */
     protected function getTemplateRegistryFactorySetPropertyInitializationMethodStatic()
     {
@@ -101,7 +101,7 @@ trait TemplateContentGetter
     }
 
     /**
-     * @return string шаблон создания класса параметра
+     * @return string шаблон создания параметра через запуск статического метода класса
      */
     protected function getTemplateRegistryFactorySetPropertyInitializationMethodNotStatic()
     {
