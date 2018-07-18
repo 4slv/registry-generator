@@ -2,6 +2,7 @@
 
 namespace RegistryGenerator;
 
+use Slov\Helper\ClassHelper;
 use Slov\Helper\FileHelper;
 use Slov\Helper\StringHelper;
 
@@ -10,7 +11,7 @@ class RegistryGenerator
 {
     use TemplateContentGetter;
 
-    /** @var string пространство имён */
+    /** @var string полный путь к родительскому классу */
     protected $extendsBy;
 
     /** @var string путь к папке проекта */
@@ -32,7 +33,7 @@ class RegistryGenerator
     protected $registryElementList = [];
 
     /**
-     * @return string|null
+     * @return string|null полный путь к родительскому классу
      */
     public function getExtendsBy(): ?string
     {
@@ -40,7 +41,7 @@ class RegistryGenerator
     }
 
     /**
-     * @param string $extendsBy
+     * @param string $extendsBy полный путь к родительскому классу
      * @return $this
      */
     public function setExtendsBy(?string $extendsBy)
@@ -48,8 +49,6 @@ class RegistryGenerator
         $this->extendsBy = $extendsBy;
         return $this;
     }
-
-
 
     /**
      * @return string путь к папке проекта
@@ -201,11 +200,11 @@ class RegistryGenerator
     }
 
     /**
-     * @return string класс расширения
+     * @return string наследование родительского класса
      */
     protected function getExtends()
     {
-        $parentClassName = $this->getParentClassName();
+        $parentClassName = ClassHelper::shortName($this->getParentClassFullName());
         return empty($parentClassName) ? '' : 'extends '. $parentClassName;
     }
 
@@ -218,30 +217,26 @@ class RegistryGenerator
     }
 
     /**
-     * @return string название родителького класса (без неймспейса)
-     */
-    protected function getParentClassName()
-    {
-        $parentClassNameParts = explode('\\', $this->getParentClassFullName());
-        return array_pop($parentClassNameParts);
-    }
-
-    /**
      * @return string контент подключаемых классов
      */
     protected function getUseClassesContent()
     {
+        $classList = [];
         $useClassesList = [];
         $parentClass = $this->getParentClassFullName();
         if(strlen($parentClass)){
-            $useClassesList[$parentClass] = "use $parentClass;";
+            $classList[] = $parentClass;
         }
 
         foreach ($this->getRegistryElementList() as $registryElement) {
             if($registryElement instanceof RegistryElementClass) {
                 $fullClassName = $registryElement->getPropertyFullClassName();
-                $useClassesList[$fullClassName] = "use $fullClassName;";
+                $classList[] = $fullClassName;
             }
+        }
+
+        foreach($classList as $class) {
+            $useClassesList[$class] = "use $class;";
         }
         return implode("\n", $useClassesList);
     }

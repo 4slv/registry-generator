@@ -4,7 +4,7 @@ namespace %namespace%;
 %useClasses%
 
 %factoryClassComment%
-class %factoryClassName%
+class %factoryClassName% %classExtends%
 {
     /** @return %registryClassName% */
     public function create()
